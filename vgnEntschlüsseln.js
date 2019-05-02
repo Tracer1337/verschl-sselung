@@ -22,19 +22,17 @@ const findBlocks = text => {
 
 const getDiffs = array => {
   const diffs = []
-  for(let block in array){
-    for(let i = 0; i < array[block].length-1; i++){
-      diffs.push(array[block][i+1]-array[block][i])
-    }
+  for(let i = 0; i < array.length-1; i++){
+    diffs.push(array[i+1]-array[i])
   }
-  return Array.from(new Set(diffs))
+  return diffs
 }
 
 const getGreatestDivisors = nrs => {
   const divisors = {}
   for(let i = 0; i < nrs.length; i++){
     for(let j = i; j < nrs.length; j++){
-      if(i === j || nrs[i] === nrs[j]) continue
+      if(i === j) continue
       const d = gcd(nrs[i],nrs[j])
       divisors[d] = !divisors[d] ? 1 : divisors[d] + 1
     }
@@ -43,9 +41,17 @@ const getGreatestDivisors = nrs => {
 }
 
 const findKeyLength = blocks => {
-  const diffs = getDiffs(blocks)
-  const greatestDivisors = getGreatestDivisors(diffs)
-  return greatestDivisors
+  let max = Object.keys(blocks)[0]
+  for(let block in blocks)
+    if(blocks[block].length > blocks[max].length) max = block
+  const diffs = getDiffs(blocks[max])
+  const divisors = getGreatestDivisors(diffs)
+  return {
+    max,
+    entry: blocks[max],
+    abstände: diffs,
+    divisors: divisors,
+  }
 }
 
 const blocks = findBlocks(gt)
