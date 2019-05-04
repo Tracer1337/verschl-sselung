@@ -1,4 +1,4 @@
-Vigenere Verschlüsselung
+Vigenere Entschlüsselung
 =
 * [Systemvorausetzungen](#anchor-requirements)
 * [Verwendung](#anchor-usage)
