@@ -21,9 +21,7 @@ const getMostFrequent = array => {
 
 const findBlocks = text => {
   const commons = {}
-
   for(let cl = 2; cl <= text.length/2; cl++){
-
     for(let i = 0; i < text.length-cl; i+=cl){
       const chunk = text.substr(i, cl)
       let lastIndex = i
@@ -36,9 +34,7 @@ const findBlocks = text => {
       if(commons[chunk].length === 0)
         delete commons[chunk]
     }
-
   }
-
   return commons
 }
 
@@ -79,8 +75,18 @@ const findKey = text => {
 
 const findKeyChar = text => String.fromCharCode(findKey(text)+65)
 
-const blocks = findBlocks(gt)
-const keyLength = findDivisor(blocks)
-const seperatedTexts = seperateText(gt, keyLength)
-const key = seperatedTexts.map(text => findKeyChar(text)).join("")
-console.log(key)
+const decryptChar = (char, key) => {
+  char = char.toUpperCase()
+  return String.fromCharCode(char.charCodeAt(0) - key < 65 ? char.charCodeAt(0) + 26 - key : char.charCodeAt(0) - key)
+}
+
+const decryptText = text => {
+  text = text.toUpperCase()
+  const blocks = findBlocks(text)
+  const keyLength = findDivisor(blocks)
+  const seperatedTexts = seperateText(gt, keyLength)
+  const key = seperatedTexts.map(text => findKeyChar(text)).join("")
+  return text.split("").map((letter, i) => decryptChar(letter, alphabetPos(key[i%key.length]))).join("")
+}
+
+console.log(decryptText(gt))
