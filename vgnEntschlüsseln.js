@@ -86,7 +86,11 @@ const decryptText = text => {
   const keyLength = findDivisor(blocks)
   const seperatedTexts = seperateText(gt, keyLength)
   const key = seperatedTexts.map(text => findKeyChar(text)).join("")
-  return text.split("").map((letter, i) => decryptChar(letter, alphabetPos(key[i%key.length]))).join("")
+  return {
+    key,
+    text: text.split("").map((letter, i) => decryptChar(letter, alphabetPos(key[i%key.length]))).join("")
+  }
 }
 
-console.log(decryptText(gt))
+const decrypted = decryptText(gt)
+console.log(`Klartext:\n${decrypted.text}\n\nSchlüssel:\n${decrypted.key}`)
