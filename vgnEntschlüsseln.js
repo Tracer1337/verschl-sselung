@@ -2,6 +2,8 @@ const gt = require(__dirname+"/text.json")
 
 const gcd = (a, b) => b == 0 ? a : gcd(b, a % b)
 
+const alphabetPos = char => char.toUpperCase().charCodeAt(0) - 65
+
 const getMostFrequent = array => {
   let mf = 1, m = 0, item
   array.forEach((n1) => {
@@ -58,7 +60,27 @@ const seperateText = (text, n) => {
   return newTexts.map(array => array.join(""))
 }
 
+const frequencyAnalysis = text => {
+  const letters = text.split("").reduce((res, letter) => {
+    !res[letter] ? res[letter] = 1 : res[letter]++
+    return res
+  }, {})
+  return letters
+}
+
+const findKey = text => {
+  const lf = frequencyAnalysis(text)
+  let max = Object.keys(lf)[0]
+  for(let letter in lf)
+    if(lf[letter] > lf[max])
+      max = letter
+  return Math.abs(alphabetPos(max) - alphabetPos("e"))
+}
+
+const findKeyChar = text => String.fromCharCode(findKey(text)+65)
+
 const blocks = findBlocks(gt)
 const keyLength = findDivisor(blocks)
-const seperatedText = seperateText(gt, keyLength)
-console.log(seperatedText)
+const seperatedTexts = seperateText(gt, keyLength)
+const key = seperatedTexts.map(text => findKeyChar(text)).join("")
+console.log(key)
