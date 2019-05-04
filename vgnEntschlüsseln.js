@@ -2,59 +2,56 @@ const gt = require(__dirname+"/text.json")
 
 const gcd = (a, b) => b == 0 ? a : gcd(b, a % b)
 
+const getMostFrequent = array => {
+  let mf = 1, m = 0, item
+  array.forEach((n1) => {
+    array.forEach((n2) => {
+      if (n1==n2) m++
+      if (mf<m){
+        mf=m
+        item=n1
+      }
+    })
+    m=0
+  })
+  return item
+}
+
 const findBlocks = text => {
   const commons = {}
 
-  for(let i = 2; i <= text.length/2; i++){
-    for(let j = 0; j < text.length-i; j+=i){
-      let chunk = text.substr(j,i)
-      if(!commons[chunk]) commons[chunk] = []
-      commons[chunk].push(j)
-    }
-  }
+  for(let cl = 2; cl <= text.length/2; cl++){
 
-  for(let chunk in commons)
-    if(commons[chunk].length <= 1)
-      delete commons[chunk]
+    for(let i = 0; i < text.length-cl; i+=cl){
+      const chunk = text.substr(i, cl)
+      let lastIndex = i
+      commons[chunk] = []
+      while(text.indexOf(chunk, lastIndex+cl) !== -1){
+        const index = text.indexOf(chunk, lastIndex+cl)
+        commons[chunk].push(index - lastIndex)
+        lastIndex = index
+      }
+      if(commons[chunk].length === 0)
+        delete commons[chunk]
+    }
+
+  }
 
   return commons
 }
 
-const getDiffs = array => {
-  const diffs = []
-  for(let i = 0; i < array.length-1; i++){
-    diffs.push(array[i+1]-array[i])
-  }
-  return diffs
-}
-
-const getGreatestDivisors = nrs => {
-  const divisors = {}
-  for(let i = 0; i < nrs.length; i++){
-    for(let j = i; j < nrs.length; j++){
-      if(i === j) continue
-      const d = gcd(nrs[i],nrs[j])
-      divisors[d] = !divisors[d] ? 1 : divisors[d] + 1
-    }
-  }
-  return divisors
-}
-
-const findKeyLength = blocks => {
-  let max = Object.keys(blocks)[0]
+const findDivisor = blocks => {
+  const nrs = []
   for(let block in blocks)
-    if(blocks[block].length > blocks[max].length) max = block
-  const diffs = getDiffs(blocks[max])
-  const divisors = getGreatestDivisors(diffs)
-  return {
-    max,
-    entry: blocks[max],
-    abstände: diffs,
-    divisors: divisors,
-  }
+    nrs.push(...blocks[block])
+
+  return getMostFrequent(nrs.map((n, i, nrs) => {
+    if(i == nrs.length-1) return
+    return gcd(n,nrs[i+1])
+  }))
 }
 
 const blocks = findBlocks(gt)
-const keyLength = findKeyLength(blocks)
+const divisor = findDivisor(blocks)
 console.log(blocks)
-console.log(keyLength)
+console.log(divisor)
