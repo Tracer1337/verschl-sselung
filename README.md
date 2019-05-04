@@ -13,7 +13,7 @@ Um Das Skript ausführen zu können wird Node.js benötigt. Die neueste Version 
 <a name="anchor-usage"></a>
 Verwendung
 =
-Um das Skript mit dem standardmäßigen Geheimtext auszuführen werden keine weiteren Argumente benötigt.
+Um das Skript mit dem standardmäßigen Geheimtext auszuführen, werden keine weiteren Argumente benötigt.
 ```
 node Vigenere.js
 ```
