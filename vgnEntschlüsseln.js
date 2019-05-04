@@ -1,4 +1,4 @@
-const gt = require(__dirname+"/text.json")
+const gt = process.argv[2] ? process.argv[2] : require(__dirname+"/text.json")
 
 const gcd = (a, b) => b == 0 ? a : gcd(b, a % b)
 
@@ -82,6 +82,8 @@ const decryptChar = (char, key) => {
 
 const decryptText = text => {
   text = text.toUpperCase()
+  text = text.replace(/\W/g, "")
+  console.log(text)
   const blocks = findBlocks(text)
   const keyLength = findDivisor(blocks)
   const seperatedTexts = seperateText(gt, keyLength)
