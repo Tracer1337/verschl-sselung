@@ -23,16 +23,16 @@ const findBlocks = text => {
   const commons = {}
   for(let cl = 2; cl <= text.length/2; cl++){
     for(let i = 0; i < text.length-cl; i+=cl){
-      const chunk = text.substr(i, cl)
+      const block = text.substr(i, cl)
       let lastIndex = i
-      commons[chunk] = []
-      while(text.indexOf(chunk, lastIndex+cl) !== -1){
-        const index = text.indexOf(chunk, lastIndex+cl)
-        commons[chunk].push(index - lastIndex)
+      commons[block] = []
+      while(text.indexOf(block, lastIndex+cl) !== -1){
+        const index = text.indexOf(block, lastIndex+cl)
+        commons[block].push(index - lastIndex)
         lastIndex = index
       }
-      if(commons[chunk].length === 0)
-        delete commons[chunk]
+      if(commons[block].length === 0)
+        delete commons[block]
     }
   }
   return commons
@@ -83,10 +83,9 @@ const decryptChar = (char, key) => {
 const decryptText = text => {
   text = text.toUpperCase()
   text = text.replace(/\W/g, "")
-  console.log(text)
   const blocks = findBlocks(text)
   const keyLength = findDivisor(blocks)
-  const seperatedTexts = seperateText(gt, keyLength)
+  const seperatedTexts = seperateText(text, keyLength)
   const key = seperatedTexts.map(text => findKeyChar(text)).join("")
   return {
     key,
