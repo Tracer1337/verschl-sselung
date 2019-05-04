@@ -51,7 +51,14 @@ const findDivisor = blocks => {
   }))
 }
 
+const seperateText = (text, n) => {
+  const newTexts = new Array(n).fill(0).map(() => [])
+  for(let i = 0; i < text.length; i++)
+    newTexts[i%n].push(text[i])
+  return newTexts.map(array => array.join(""))
+}
+
 const blocks = findBlocks(gt)
-const divisor = findDivisor(blocks)
-console.log(blocks)
-console.log(divisor)
+const keyLength = findDivisor(blocks)
+const seperatedText = seperateText(gt, keyLength)
+console.log(seperatedText)
