@@ -31,10 +31,10 @@ text = text.toUpperCase()
 text = text.replace(/\W/g, "")
 ```
 Anschließend werden nacheinander
-1. [mehrmals auftretende Blöcke bestimmt,](#anchor-func-blocks)
-1. [anhand dieser Blöcken die Schlüssellänge bestimmt,](#anchor-func-keylength)
-1. [mit der Schlüssellänge der Geheimtext in n Texte aufgeteilt,](#anchor-func-seperate)
-1. [mit allen Caeser-Code verschlüsselten Texten das Schlüsselwort bestimmt,](#anchor-func-caeserCrack)
+1. [Mehrmals auftretende Blöcke bestimmt,](#anchor-func-blocks)
+1. [Anhand dieser Blöcken die Schlüssellänge bestimmt,](#anchor-func-keylength)
+1. [Mit der Schlüssellänge der Geheimtext in n Texte aufgeteilt,](#anchor-func-seperate)
+1. [Mit allen Caeser-Code verschlüsselten Texten das Schlüsselwort bestimmt,](#anchor-func-caeserCrack)
 1. [Mit diesem Schlüsselwort der Geheimtext entschlüsselt.](#anchor-func-textDecode)
 
 <a name="anchor-func-blocks"></a>
@@ -183,7 +183,7 @@ Zurückgegeben wird der Abstand des häufigsten Buchstabens ``max`` zum Buchstab
 ```Javascript
 73  return Math.abs(alphabetPos(max) - alphabetPos("e"))
 ```
-Die Funktion ``findKeyChar`` ermittelt den Schlüssel eines Caeser-Textes, gibt diesen aber als Buchstaben zurück (Der Schlüssel des Vigenere-Verfahrens ist besteht aus Buchstaben, nicht aus Zahlen).
+Die Funktion ``findKeyChar`` ermittelt den Schlüssel eines Caeser-Textes, gibt diesen aber als Buchstaben zurück (der Schlüssel des Vigenere-Verfahrens besteht aus Buchstaben, nicht aus Zahlen).
 ```Javascript
 76  const findKeyChar = text => String.fromCharCode(findKey(text)+65)
 ```
