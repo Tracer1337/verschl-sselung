@@ -1,14 +1,14 @@
-Vigenere Entschlüsselung
+Vigenère Entschlüsselung
 =
-* [Systemvorausetzungen](#anchor-requirements)
+* [Systemvoraussetzungen](#anchor-requirements)
 * [Verwendung](#anchor-usage)
 * [Funktionsweise](#anchor-func)
 * [Beispiele](#anchor-examples)
 
 <a name="anchor-requirements"></a>
-Systemvorausetzungen
+Systemvoraussetzungen
 =
-Um Das Skript ausführen zu können wird Node.js benötigt. Die neueste Version des Programms kann [hier](https://nodejs.org/en/download/) heruntergeladen werden.
+Um das Skript ausführen zu können wird Node.js benötigt. Die neueste Version des Programms kann [hier](https://nodejs.org/en/download/) heruntergeladen werden.
 
 <a name="anchor-usage"></a>
 Verwendung
@@ -32,9 +32,9 @@ text = text.replace(/\W/g, "")
 ```
 Anschließend werden nacheinander
 1. [Mehrmals auftretende Blöcke bestimmt,](#anchor-func-blocks)
-1. [Anhand dieser Blöcken die Schlüssellänge bestimmt,](#anchor-func-keylength)
+1. [Anhand dieser Blöcke die Schlüssellänge bestimmt,](#anchor-func-keylength)
 1. [Mit der Schlüssellänge der Geheimtext in n Texte aufgeteilt,](#anchor-func-seperate)
-1. [Mit allen Caeser-Code verschlüsselten Texten das Schlüsselwort bestimmt,](#anchor-func-caeserCrack)
+1. [Mit allen Caesar-Code verschlüsselten Texten das Schlüsselwort bestimmt,](#anchor-func-caesarCrack)
 1. [Mit diesem Schlüsselwort der Geheimtext entschlüsselt.](#anchor-func-textDecode)
 
 <a name="anchor-func-blocks"></a>
@@ -72,7 +72,7 @@ Die Variable ``lastIndex`` erhält den Initialwert des Indexes des zu suchenden 
 ```
 > Wie man im Code erkennen kann, werden nicht wirklich alle Blöcke mit der Länge ``cl`` gesucht ``i+=cl``. Der korrekte Ausdruck wäre hier ``i++`` um alle Blöcke zu erfassen. Verbesserung im Quellcode ist in Bearbeitung.
 
-Solange der derzeitig zu suchende Block noch mindestens einmal im Geheimtext vorhanden ist, soll der Abstand zwischem dem letzten und dem neue gefundenen Vorkommens in das zugehörige Array in ``commons`` hinzugefügt werden. Die Variable ``lastIndex`` wird nach jedem gefundenen Block auf seinen zugehörigen Index im Geheimtext gesetzt, damit beim nächsten Durchgang erst ab diesem Index gesucht wird.
+Solange der derzeitig zu suchende Block noch mindestens einmal im Geheimtext vorhanden ist, soll der Abstand zwischen dem letzten und dem neue gefundenen Vorkommens in das zugehörige Array in ``commons`` hinzugefügt werden. Die Variable ``lastIndex`` wird nach jedem gefundenen Block auf seinen zugehörigen Index im Geheimtext gesetzt, damit beim nächsten Durchgang erst ab diesem Index gesucht wird.
 ```Javascript
 29  while(text.indexOf(block, lastIndex+cl) !== -1){
 30    const index = text.indexOf(block, lastIndex+cl)
@@ -116,7 +116,7 @@ Dafür werden zuerst alle Zahlen in ein Array extrahiert.
 43  for(let block in blocks)
 44    nrs.push(...blocks[block])
 ```
-Anschließend werden von allen aufeinderfolgenden Zahlen die größten geimeinsamen Teiler mit Hilfe der Funktion [``gcd``](https://stackoverflow.com/questions/17445231/js-how-to-find-the-greatest-common-divisor) bestimmt.
+Anschließend werden von allen aufeinanderfolgenden Zahlen die größten gemeinsamen Teiler mithilfe der Funktion [``gcd``](https://stackoverflow.com/questions/17445231/js-how-to-find-the-greatest-common-divisor) bestimmt.
 > Der auskommentierte Teil ist für die Bestimmung der Teiler unwichtig.
 ```Javascript
 46    /*return getMostFrequent(*/nrs.map((n, i, nrs) => {
@@ -140,12 +140,12 @@ Die Funktion gibt den am häufigsten vorkommenden Teiler mit Hilfe der Funktion 
 56    return newTexts.map(array => array.join(""))
 57  }
 ```
-Es werden zuerst ``n`` Arrays erstellt (in diesem Fall ist ``n`` die Schlüssellänge) und diese Arrays mit den zugehörigen Buchstaben des Geheimtextes gefüllt, sodass ``n`` Arrays mit Caeser-Code verschlüsselten Texten entstehen.
+Es werden zuerst ``n`` Arrays erstellt (in diesem Fall ist ``n`` die Schlüssellänge) und diese Arrays mit den zugehörigen Buchstaben des Geheimtextes gefüllt, sodass ``n`` Arrays mit Caesar-Code verschlüsselten Texten entstehen.
 
-<a name="anchor-func-caeserCrack"></a>
+<a name="anchor-func-caesarCrack"></a>
 ### Schlüsselwort bestimmen
-Dieser Abschnit beinhaltet zwei wesentliche Funktionen.
-Darunter zum einen die Funktion(en) zur Bestimmung des Schlüssels eines mit Caeser-Code verschlüsselten Textes
+Dieser Abschnitt beinhaltet zwei wesentliche Funktionen.
+Darunter zum einen die Funktion(en) zur Bestimmung des Schlüssels eines mit Caesar-Code verschlüsselten Textes
 ```Javascript
 67  const findKey = text => {
 68    const lf = frequencyAnalysis(text)
@@ -183,11 +183,11 @@ Zurückgegeben wird der Abstand des häufigsten Buchstabens ``max`` zum Buchstab
 ```Javascript
 73  return Math.abs(alphabetPos(max) - alphabetPos("e"))
 ```
-Die Funktion ``findKeyChar`` ermittelt den Schlüssel eines Caeser-Textes, gibt diesen aber als Buchstaben zurück (der Schlüssel des Vigenere-Verfahrens besteht aus Buchstaben, nicht aus Zahlen).
+Die Funktion ``findKeyChar`` ermittelt den Schlüssel eines Caesar-Textes, gibt diesen aber als Buchstaben zurück (der Schlüssel des Vigenère-Verfahrens besteht aus Buchstaben, nicht aus Zahlen).
 ```Javascript
 76  const findKeyChar = text => String.fromCharCode(findKey(text)+65)
 ```
-Der entgültige Schlüssel wird bestimmt, indem von allen mit Caeser-Code verschlüsselten Texten der Schlüssel-Buchstabe bestimmt wird, und diese zu einer Zeichenkette zusammengefügt werden.
+Der endgültige Schlüssel wird bestimmt, indem von allen mit Caesar-Code verschlüsselten Texten der Schlüssel-Buchstabe bestimmt wird, und diese zu einer Zeichenkette zusammengefügt werden.
 ```Javascript
 89  const key = seperatedTexts.map(text => findKeyChar(text)).join("")
 ```
@@ -208,9 +208,9 @@ Der entgültige Schlüssel wird bestimmt, indem von allen mit Caeser-Code versch
 > Der auskommentierte Teil ist für die Entschlüsselung des Geheimtextes unwichtig.
 
 Da das Schlüsselwort nun bekannt ist, kann der Geheimtext einfach entschlüsselt werden, indem jeder Buchstabe des Geheimtextes mit dem dazugehörigen Buchstaben des Schlüsselwortes entschlüsselt wird.
-Der entsprechende Schlüssel-Buchstabe ist derjenige, der über dem zu entschlüsselnden Buchstaben stehen würde, würde mann das Schlüsselwort sich wiederholend über den Geheimtext legen.
+Der entsprechende Schlüssel-Buchstabe ist derjenige, der über dem zu entschlüsselnden Buchstaben stehen würde, würde man das Schlüsselwort sich wiederholend über den Geheimtext legen.
 
-Die Funktion ``decryptChar`` dient hierbei zur Entschlüsselung eines einzelnen Buchstabens bei gegebenem Schlüssel, indem sie den Buchstaben zurückgiebt, der im Alphabet ``key`` Plätze hinter dem zu entschlüsselnden Buchstaben liegt.
+Die Funktion ``decryptChar`` dient hierbei zur Entschlüsselung eines einzelnen Buchstabens bei gegebenem Schlüssel, indem sie den Buchstaben zurückgibt, der im Alphabet ``key`` Plätze hinter dem zu entschlüsselnden Buchstaben liegt.
 ```Javascript
 80  return String.fromCharCode(char.charCodeAt(0) - key < 65 ? char.charCodeAt(0) + 26 - key : char.charCodeAt(0) - key)
 ```
@@ -231,7 +231,7 @@ Beim Ausführen des Skriptes wird die Funktion ``decryptText`` mit dem vorgegebe
 <a name="anchor-examples"></a>
 Beispiele
 =
-Mit dem vorgebenenen Text aus ``text.json`` als Eingabe, ergibt sich folgende Ausgabe:
+Mit dem vorgegebenenen Text aus ``text.json`` als Eingabe, ergibt sich folgende Ausgabe:
 ```
 Klartext:
 DERRABEUNDDERFUCHSANEINEMMORGENSASSEINRABEMITEINEMGESTOHLENENSTUECKKAESEIMSCHNABELAUFEINEMASTWOERINRUHESEINEBEUTEVERZEHRENWOLLTEZUFRIEDENKRAECHZTEDERRABEUEBERSEINENKAESEDIESHOERTEEINVORBEIZIEHENDERFUCHSERDACHTENACHWIEERANDENKAESEKOMMENKOENNTEENDLICHHATTEEREINEHINTERLISTIGEIDEEFREUNDLICHBEGANNDERFUCHSDENRABENZULOBENOHRABEWASBISTDUFUEREINWUNDERBARERVOGELWENNDEINGESANGEBENSOSCHOENISTWIEDEINGEFIEDERDANNSOLLTEMANDICHZUMKOENIGALLERVOEGELKROENENDASSCHMEICHELTEDEMRABENUNDDASHERZSCHLUGIHMVORFREUDEHOEHERSTOLZRISSERSEINENSCHNABELAUFUNDBEGANNZUKRAECHZENDABEIENTFIELIHMDASKOESTLICHESTUECKKAESEDARAUFHATTEDERFUCHSNURGEWARTETSCHNELLSCHNAPPTEERSICHDIEBEUTEUNDMACHTESICHGLEICHANSFRESSENDARIEFDERRABEEMPOERTHEDASWARGEMEINDOCHDERFUCHSLACHTENURUEBERDENTOERICHTENRABEN
