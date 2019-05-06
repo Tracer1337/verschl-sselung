@@ -1,3 +1,4 @@
+// Entschlüsselung
 const gt = process.argv[2] ? process.argv[2] : require(__dirname+"/text.json")
 
 const gcd = (a, b) => b == 0 ? a : gcd(b, a % b)
@@ -95,3 +96,6 @@ const decryptText = text => {
 
 const decrypted = decryptText(gt)
 console.log(`Klartext:\n${decrypted.text}\n\nSchlüssel:\n${decrypted.key}`)
+
+// Verschlüsselung
+const cryptText = (text, key) => text.toUpperCase().replace(/[A-Z]/g, (c,i) => String.fromCharCode((c.charCodeAt(0)-65+key[i%key.length].charCodeAt(0)-65)%26+65))
